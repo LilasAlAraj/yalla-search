@@ -15,21 +15,21 @@ if (!isset($_SESSION['user_id'])) {
             'status' => 'error',
             'message' => 'answer field is required.'
         );
-    } else if (!isset($_POST['star'])) {
+    } else if (!isset($_POST['comment'])) {
         $response = array(
             'status' => 'error',
-            'message' => 'star field is required.'
+            'message' => 'comment field is required.'
         );
     } else {
         try {
             $answer_id = $_POST['answer_id'];
-            $star = $_POST['star'];
+            $comment = $_POST['comment'];
             $user_id = $_SESSION['user_id'];
 
-            rate_answer($pdo, $star, $answer_id, $user_id);
+            add_comment($pdo, $comment, $answer_id, $user_id);
             $response = array(
                 'status' => 'success',
-                'message' => 'You have rated the answer successfully.'
+                'message' => 'You have added new comment for the answer successfully.'
             );
         } catch (Exception $e) {
             $response = array(
@@ -51,14 +51,14 @@ exit();
 
 
 
-function rate_answer($PDO, $star, $answer_id, $user_id)
+function add_comment($PDO, $comment, $answer_id, $user_id)
 {
-    $sql = "insert into rates (rate,answer_id ,user_id) 
-          values(:rate,:answer_id,:user_id )";
+    $sql = "insert into comments (comment,answer_id ,user_id) 
+          values(:comment,:answer_id,:user_id )";
 
     $stmt = $PDO->prepare($sql);
     $stmt->execute(array(
-        ':rate' => $star,
+        ':comment' => $comment,
         ':answer_id' => $answer_id,
         ':user_id' => $user_id,
 

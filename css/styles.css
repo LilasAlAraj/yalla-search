@@ -12913,3 +12913,8 @@ header.masthead .h1 {
 .star input:checked~label:after {
   opacity: 1;
 }
+
+#commentsContainer{
+  height: 27rem;
+  overflow-y: scroll;
+}
