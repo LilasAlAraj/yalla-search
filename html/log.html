@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>YallaSearch</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Bootstrap Icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic"
+        rel="stylesheet" type="text/css" />
+    <!-- SimpleLightbox plugin CSS-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="../css/styles.css" rel="stylesheet" />
+</head>
+
+<body id="page-top" class="d-none">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-shrink" id="mainNav">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="../index.html"><span class="text-primary">Y</span>alla<span
+                    class="text-primary">S</span>earch</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto my-2 my-lg-0">
+
+                    <li class="nav-item align-self-lg-center"><a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item align-self-lg-center text-primary"><a class="nav-link " href="top10.html">Top
+                            10</a></li>
+                    <li class="nav-item">
+                        <form class="bd-search d-flex align-items-center">
+                            <span class="algolia-autocomplete"
+                                style="position: relative; display: inline-block; direction: ltr;"><input type="search"
+                                    class="form-control ds-input" id="search-input" placeholder="Search in log..."
+                                    aria-label="Search for..." autocomplete="off" spellcheck="false" role="combobox"
+                                    aria-autocomplete="list" aria-expanded="false"
+                                    aria-owns="algolia-autocomplete-listbox-0" dir="auto"
+                                    style="position: relative; vertical-align: top;">
+                                <pre aria-hidden="true"
+                                    style="position: absolute; visibility: hidden; white-space: pre; font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 16px; font-style: normal; font-variant: normal; font-weight: 400; word-spacing: 0px; letter-spacing: normal; text-indent: 0px; text-rendering: auto; text-transform: none;"></pre>
+                                <span class="ds-dropdown-menu" role="listbox" id="algolia-autocomplete-listbox-0"
+                                    style="position: absolute; top: 100%; z-index: 100; left: 0px; right: auto; display: none;">
+                                    <div class="ds-dataset-1"></div>
+                                </span>
+                            </span>
+                            <button class="btn btn-link bd-search-docs-toggle d-md-none p-0 ml-3" type="button"
+                                data-toggle="collapse" data-target="#bd-docs-nav" aria-controls="bd-docs-nav"
+                                aria-expanded="false" aria-label="Toggle docs navigation"><svg
+                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"
+                                    focusable="false">
+                                    <title>Menu</title>
+                                    <path stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-miterlimit="10" d="M4 7h22M4 15h22M4 23h22"></path>
+                                </svg>
+                            </button>
+                        </form>
+                    </li>
+                    <li class="nav-item " id="myLog-li"></li>
+                    <li class="nav-item " id="logout-li"></li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <section class="page-section" id="questions">
+
+
+        <div class="container px-4 px-lg-5" id="logContainer">
+            <div class="text-primary mb-4 fs-2 fw-bold"> My Log</div>
+
+
+        </div>
+
+
+        <nav aria-label="Page navigation example" class="mt-5">
+            <ul class="pagination justify-content-center" id="pagination">
+
+            </ul>
+        </nav>
+    </section>
+    <!-- Footer-->
+    <footer class="bg-light py-1 fixed-bottom">
+        <div class="container px-4 px-lg-5">
+            <div class="small text-center text-muted">Copyright &copy; 2024 - YallaSearch</div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade" id="removeAnswer" tabindex="-1" aria-labelledby="removeAnswerLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="removeAnswerLabel">Remove an answer?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="removeAnswerForm">
+                    <div class="form-group">
+                        <input type="hidden" name="answer_id" id="removed_answer_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="removeQuestion" tabindex="-1" aria-labelledby="removeQuestionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="removeQuestionLabel">Remove a question?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="removeQuestionForm">
+                    <div class="form-group">
+                        <input type="hidden" name="question_id" id="removed_question_id">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+        integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+        crossorigin="anonymous"></script>
+    <!-- SimpleLightbox plugin JS-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
+    <!-- Core theme JS-->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <!-- * *                               SB Forms JS                               * *-->
+    <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
+    <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(async function () {
+
+            var authenticated;
+            var user_id;
+            await $.ajax({
+                url: '../php/check_auth.php', // PHP script to check authentication
+                type: 'GET',
+                dataType: 'json',
+                success: function (response) {
+                    authenticated = response.authenticated;
+                    user_id = response.user_id;
+                    if (authenticated) {
+                        $("#logout-li").html(`<a
+                        class="nav-link btn-primary rounded  bg-primary text-white mx-lg-2 my-2 my-lg-0  w-fit-c  px-2 align-content-center h-100 "
+                        href="../php/logout.php">Logout</a>`)
+                        $("#myLog-li").html(`<a
+                        class="nav-link btn-primary rounded  bg-primary text-white mx-lg-2 my-2 my-lg-0  w-fit-c  px-2 align-content-center h-100 "
+                        href="log.html">My Log</a>`)
+                    } else {
+                        alert("please sign in first to see your log");
+                        window.location.href = 'login.html';
+                    }
+
+
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error checking authentication status:', error);
+                }
+            });
+
+            const searchParams = new URLSearchParams(window.location.search)
+
+
+            var page = searchParams.get('page');
+            var search = searchParams.get('search');
+
+            if (page == null && search == null) {
+                route = '../php/getLog.php';
+            } else if (page == null && search != null) {
+                route = '../php/getLog.php?search=' + search;
+            } else if (page != null && search == null) {
+                route = '../php/getLog.php?page=' + page;
+            } else {
+                route = '../php/getLog.php?page=' + page + '&search=' + search;
+            }
+            if (search != null) {
+                $("#search-input").val(search);
+            }
+
+            // Make AJAX request to get user data
+            $.ajax({
+                url: route,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == 'success') {
+                        if (data.log.length === 0) {
+                            // Append message indicating no partners have joined yet
+                            $('#logContainer').append('<p>No qustions or answers have found yet.</p>');
+                        } else { // Iterate over each partner data
+                            data.log.forEach(function (resLog) {
+                                // Generate HTML for the partner
+                                if (resLog.type == 'question')
+                                    var resLogHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title justify-content-between d-flex"><a href="questions/question.html?id=${resLog.id}">${resLog.title}</a>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-patch-question" viewBox="0 0 16 16">
+                            <path d="M8.05 9.6c.336 0 .504-.24.554-.627.04-.534.198-.815.847-1.26.673-.475 1.049-1.09 1.049-1.986 0-1.325-.92-2.227-2.262-2.227-1.02 0-1.792.492-2.1 1.29A1.7 1.7 0 0 0 6 5.48c0 .393.203.64.545.64.272 0 .455-.147.564-.51.158-.592.525-.915 1.074-.915.61 0 1.03.446 1.03 1.084 0 .563-.208.885-.822 1.325-.619.433-.926.914-.926 1.64v.111c0 .428.208.745.585.745"/>
+                            <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
+                            <path d="M7.001 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0"/>
+                            </svg>              
+                        </h5>
+                        <p class="card-text"><pre>${resLog.body}</pre></p>
+                        <p class="card-text"><small class="text-muted">At ${resLog.created_at}</small></p>
+                        <div class="container">
+                            <button type="button" class="btn btn-outline-warning btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                                Edit question
+                            </button>
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#removeQuestion" onclick="delete_question(${resLog.id})">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"></path>
+                                </svg>
+                                Remove question
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+                                else
+                                    var resLogHTML = `
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title justify-content-between d-flex"><a href="answers/answer.html?id=${resLog.id}">${resLog.title}</a>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-patch-check" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0"/>
+                            <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
+                            </svg>
+                        </h5>
+                        <p class="card-text"><pre>${resLog.body}</pre></p>
+                        <p class="card-text"><small class="text-muted">At ${resLog.created_at}</small></p>
+                        <div class="container">
+                            <button type="button" class="btn btn-outline-warning  btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                </svg>
+                                Edit answer
+                            </button>
+                            <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#removeAnswer" onclick="delete_answer(${resLog.id})">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"></path>
+                                </svg>
+                                Remove answer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+
+                                // Append partner HTML to the container
+                                $('#logContainer').append(resLogHTML);
+                            });
+                        }
+
+                        paginations = `
+                    <li class="page-item ${1 == data.currentPage ? 'disabled' : ''}">
+                        <a class="page-link" href="${1 != data.currentPage ? 'log.html?page=' + (data.currentPage - 1) : ''}" tabindex="-1">Previous</a>
+                    </li>`;
+
+
+                        totalPages = data.totalPages;
+                        for (var i = 1; i <= totalPages; i++) {
+                            paginations += `
+                            <li class="page-item">
+                                <a class="page-link ${i == data.currentPage ? 'active' : ''}" href="log.html?page=${i}">${i}</a>
+                            </li>
+                        `
+                        }
+
+                        paginations += `
+                    <li class="page-item ${totalPages == data.currentPage ? 'disabled' : ''}">
+                        <a class="page-link" href="${totalPages != data.currentPage ? 'log.html?page=' + (parseInt(data.currentPage) + 1) : ''}">Next</a>
+                    </li>`
+
+                        $('#pagination').append(paginations);
+
+                        $('body').removeClass('d-none');
+                    } else {
+                        $('body').removeClass('d-none');
+                        alert(data.message)
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+
+
+            $('form#removeAnswerForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize(); // Serialize form data into URL-encoded string
+
+                $.ajax({
+                    url: '../php/deleteAnswer.php',
+                    type: 'POST',
+                    data: formData, // Form data to be sent to the server
+                    dataType: 'json',
+                    success: function (data) {
+                        alert(data.message)
+                        if (data.status == 'success') {
+                            window.location.href = 'log.html';
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+            );
+
+            $('form#removeQuestionForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize(); // Serialize form data into URL-encoded string
+
+                $.ajax({
+                    url: '../php/deleteQuestion.php',
+                    type: 'POST',
+                    data: formData, // Form data to be sent to the server
+                    dataType: 'json',
+                    success: function (data) {
+                        alert(data.message)
+                        if (data.status == 'success') {
+                            window.location.href = 'log.html';
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+            );
+
+        });
+        function delete_answer(removed_answer_id) {
+            $("#removed_answer_id").val(removed_answer_id);
+        }
+
+        function delete_question(removed_question_id) {
+            $("#removed_question_id").val(removed_question_id);
+        }
+
+
+    </script>
+
+</body>
+
+</html>

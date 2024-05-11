@@ -18,7 +18,7 @@
     <!-- SimpleLightbox plugin CSS-->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="../css/styles.css" rel="stylesheet" />
+    <link href="../../css/styles.css" rel="stylesheet" />
     <!-- <link href="../css/signup.css" rel="stylesheet" /> -->
 </head>
 
@@ -32,39 +32,24 @@
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="mb-5">
-                                        <h3 class="h4 font-weight-bold  fw-bolder text-primary">Register</h3>
+                                        <h3 class="h4 font-weight-bold  fw-bolder text-primary">Ask a question</h3>
                                     </div>
 
-                                    <h6 class="h5 mb-0">Welcome!</h6>
-                                    <p class="text-muted mt-2 mb-5">Please fill up your information.</p>
+                                    <h6 class="h5 mb-0">Add a new question</h6>
+                                    <p class="text-muted mt-2 mb-5">Enter your question and a title for it to receive
+                                        answers for it.</p>
 
-                                    <form id="registerForm" method="post">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                                <div class="form-group">
-                                                    <label for="fname">First name</label>
-                                                    <input type="text" class="form-control" id="fname" name="fname"
-                                                        required>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                                <div class="form-group">
-                                                    <label for="lname">Last name</label>
-                                                    <input type="text" class="form-control" id="lname" name="lname"
-                                                        required>
-                                                </div>
-                                            </div>
+                                    <form method="post" id="addForm">
+                                        <div class="form-group">
+                                            <label for="title">Question title</label>
+                                            <input type="title" class="form-control" id="title" name="title">
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">Email address</label>
-                                            <input type="email" class="form-control" id="email" name="email" required>
+                                            <label for="question">Your question</label>
+                                            <textarea class="form-control" id="question" rows="3" name="question"
+                                                id="question"></textarea>
                                         </div>
-                                        <div class="form-group mb-5">
-                                            <label for="password">Password</label>
-                                            <input type="password" class="form-control" id="password" name="password"
-                                                required>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Register</button>
+                                        <button type="submit" class="btn btn-primary  mt-3">Add</button>
                                     </form>
                                 </div>
                             </div>
@@ -75,8 +60,7 @@
                                     <div class="account-testimonial">
                                         <h4 class="text-white mb-4">Your Favorite Place!</h4>
                                         <p class="lead text-white">"<a href="../index.html">YallaSearch</a> is the place
-                                            to go to get the answers
-                                            you need and to ask the questions you want.
+                                            to go to get the answers you need and to ask the questions you want.
                                             ."</p>
                                     </div>
                                 </div>
@@ -88,10 +72,6 @@
                 </div>
                 <!-- end card -->
 
-                <p class="text-muted text-center mt-3 mb-0">Have an account? <a href="login.html"
-                        class="text-primary ml-1">login</a></p>
-
-                <!-- end row -->
 
             </div>
             <!-- end col -->
@@ -103,49 +83,47 @@
     <!-- SimpleLightbox plugin JS-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
     <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <!-- * *                               SB Forms JS                               * *-->
     <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(async function () {
-            // Check user authentication status
             await $.ajax({
-                url: '../php/check_auth.php', // PHP script to check authentication
+                url: '../../php/check_auth.php', // PHP script to check authentication
                 type: 'GET',
                 dataType: 'json',
                 success: function (response) {
                     if (response.authenticated) {
-                        window.location.href = 'home.html';
+                        $('body').removeClass("d-none")
 
                     } else {
-                        $('body').removeClass("d-none")
+                        alert("please sign in first to add new question");
+                        window.location.href = '../login.html';
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error checking authentication status:', error);
                 }
-            }); // Handle form submission
-            $('form#registerForm').submit(function (event) {
+            });  // Handle form submission
+            $('form#addForm').submit(function (event) {
                 event.preventDefault(); // Prevent default form submission
                 var formData = $(this).serialize(); // Serialize form data
 
                 // Send AJAX request to login.php
                 $.ajax({
                     type: 'POST',
-                    url: '../php/register.php',
+                    url: '../../php/addQuestion.php',
                     data: formData,
                     dataType: 'json', // Expect JSON response
                     success: function (response) {
                         alert(response.message);
                         if (response.status === 'success') {
                             // If authentication successful, redirect to home page
-                            window.location.href = 'home.html';
+                            window.location.href = '../home.html';
                         }
                     },
                     error: function (xhr, status, error) {

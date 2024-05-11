@@ -33,15 +33,16 @@
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ms-auto my-2 my-lg-0">
 
-                    <li class="nav-item align-self-lg-center"><a class="nav-link active" href="home.html">Home</a>
+                    <li class="nav-item align-self-lg-center"><a class="nav-link " href="home.html">Home</a>
                     </li>
-                    <li class="nav-item align-self-lg-center text-primary"><a class="nav-link " href="top10.html">Top
+                    <li class="nav-item align-self-lg-center text-primary"><a class="nav-link active"
+                            href="top10.html">Top
                             10</a></li>
                     <li class="nav-item">
                         <form class="bd-search d-flex align-items-center" id="searchForm">
                             <span class="algolia-autocomplete"
                                 style="position: relative; display: inline-block; direction: ltr;"><input type="search"
-                                    class="form-control ds-input" id="search-input" placeholder="Search in home..."
+                                    class="form-control ds-input" id="search-input" placeholder="Search in top 10..."
                                     aria-label="Search for..." autocomplete="off" spellcheck="false" role="combobox"
                                     aria-autocomplete="list" aria-expanded="false"
                                     aria-owns="algolia-autocomplete-listbox-0" dir="auto"
@@ -130,6 +131,7 @@
                         $("#logout-li").html(`<a
                         class="nav-link btn-primary rounded  bg-primary text-white mx-lg-2 my-2 my-lg-0  w-fit-c  px-2 align-content-center h-100 "
                         href="../php/logout.php">Logout</a>`)
+
                         $("#myLog-li").html(`<a
                         class="nav-link btn-primary rounded  bg-primary text-white mx-lg-2 my-2 my-lg-0  w-fit-c  px-2 align-content-center h-100 "
                         href="log.html">My Log</a>`)
@@ -144,19 +146,20 @@
 
             const searchParams = new URLSearchParams(window.location.search)
 
-
             var page = searchParams.get('page');
             var search = searchParams.get('search');
 
             if (page == null && search == null) {
-                route = '../php/getQuestions.php';
+                route = '../php/getTop10Questions.php';
             } else if (page == null && search != null) {
-                route = '../php/getQuestions.php?search=' + search;
+                route = '../php/getTop10Questions.php?search=' + search;
             } else if (page != null && search == null) {
-                route = '../php/getQuestions.php?page=' + page;
+                route = '../php/getTop10Questions.php?page=' + page;
             } else {
-                route = '../php/getQuestions.php?page=' + page + '&search=' + search;
+                route = '../php/getTop10Questions.php?page=' + page + '&search=' + search;
             }
+
+
             if (search != null) {
                 $("#search-input").val(search);
             }
@@ -169,7 +172,7 @@
                     if (data.status == 'success') {
                         if (data.questions.length === 0) {
                             // Append message indicating no partners have joined yet
-                            $('#questionsContainer').append('<p>No qustions have asked yet.</p>');
+                            $('#questionsContainer').append('<p>No qustions have answered yet.</p>');
                         } else { // Iterate over each partner data
                             data.questions.forEach(function (question) {
                                 // Generate HTML for the partner
@@ -189,50 +192,51 @@
                                 $('#questionsContainer').append(questionHTML);
                             });
                         }
+
                         totalPages = data.totalPages;
 
                         previousHref = '';
                         if (1 != data.currentPage && totalPages != 0) {
                             if (search != null) {
-                                previousHref = 'home.html?page=' + (data.currentPage - 1) + '&search=' + search
+                                previousHref = 'top10.html?page=' + (data.currentPage - 1) + '&search=' + search
                             } else {
-                                previousHref = 'home.html?page=' + (data.currentPage - 1)
+                                previousHref = 'top10.html?page=' + (data.currentPage - 1)
                             }
 
                         }
                         paginations = `
-                    <li class="page-item ${1 == data.currentPage || totalPages == 0 ? 'disabled' : ''}">
-                        <a class="page-link" href="${previousHref}" tabindex="-1">Previous</a>
-                    </li>`;
+<li class="page-item ${1 == data.currentPage || totalPages == 0 ? 'disabled' : ''}">
+<a class="page-link" href="${previousHref}" tabindex="-1">Previous</a>
+</li>`;
 
 
                         for (var i = 1; i <= totalPages; i++) {
                             currentHref = '';
                             if (search != null) {
-                                currentHref = 'home.html?page=' + (i) + '&search=' + search
+                                currentHref = 'top10.html?page=' + (i) + '&search=' + search
                             } else {
-                                currentHref = 'home.html?page=' + (i)
+                                currentHref = 'top10.html?page=' + (i)
                             }
                             paginations += `
-                            <li class="page-item">
-                                <a class="page-link ${i == data.currentPage ? 'active' : ''}" href="${currentHref}">${i}</a>
-                            </li>
-                        `
+    <li class="page-item">
+        <a class="page-link ${i == data.currentPage ? 'active' : ''}" href="${currentHref}">${i}</a>
+    </li>
+`
                         }
 
                         nextHref = '';
                         if (totalPages != data.currentPage && totalPages != 0) {
                             if (search != null) {
-                                nextHref = 'home.html?page=' + (parseInt(data.currentPage) + 1) + '&search=' + search
+                                nextHref = 'top10.html?page=' + (parseInt(data.currentPage) + 1) + '&search=' + search
                             } else {
-                                nextHref = 'home.html?page=' + (parseInt(data.currentPage) + 1)
+                                nextHref = 'top10.html?page=' + (parseInt(data.currentPage) + 1)
                             }
 
                         }
                         paginations += `
-                    <li class="page-item ${totalPages == data.currentPage || totalPages == 0 ? 'disabled' : ''}">
-                        <a class="page-link" href="${nextHref}">Next</a>
-                    </li>`
+<li class="page-item ${totalPages == data.currentPage || totalPages == 0 ? 'disabled' : ''}">
+<a class="page-link" href="${nextHref}">Next</a>
+</li>`
 
                         $('#pagination').append(paginations);
 
@@ -246,15 +250,16 @@
                     console.error(xhr.responseText);
                 }
             });
+
+
+
+
             $("form#searchForm").submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize(); // Serialize form data
-                window.location.href = 'home.html?' + formData
+                window.location.href = 'top10.html?' + formData
 
             })
-
-
-
         });
     </script>
 
