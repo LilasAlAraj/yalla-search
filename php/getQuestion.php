@@ -14,9 +14,13 @@ where questions.id = :id";
     $question = $stmt->fetch(PDO::FETCH_ASSOC);
 
 
-    $sql = "SELECT answers.*, users.fname, users.lname FROM answers
+    $sql = "SELECT answers.*, users.fname, users.lname, COALESCE(sum(rates.rate)/count(rates.rate), 0) AS rate,
+	(select rates.rate from rates where rates.user_id = 1 and rates.answer_id = answers.id) as prev_rate
+	FROM answers
     join users on answers.user_id = users.id
-    where answers.question_id = :id";
+	left join rates on rates.answer_id = answers.id
+    where answers.question_id = :id
+    GROUP BY answers.id;";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_INT);
     $stmt->execute();

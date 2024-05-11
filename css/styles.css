@@ -12871,3 +12871,45 @@ header.masthead .h1 {
   left: 0;
   right: 0;
 }
+
+
+
+.star input {
+  display: none;
+}
+
+.star label {
+  display: block;
+  cursor: pointer;
+  width: 50px;
+}
+
+.star label:before {
+  content:'\2605' ;
+  position: relative;
+  display: block;
+  font-size: 50px;
+  color: #101010;
+}
+
+
+
+.star label:after {
+  content:'\2605' ;
+  /* font-family: 'FontAwesome'; */
+  position: absolute;
+  display: block;
+  font-size: 50px;
+  color: #FFBD13;
+  top: 15px;
+  opacity: 0;
+  transition: .5s;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, .5);
+}
+
+.star label:hover:after,
+.star label:hover~label:after,
+
+.star input:checked~label:after {
+  opacity: 1;
+}

@@ -118,6 +118,33 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editAnswer" tabindex="-1" aria-labelledby="editAnswerLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editAnswerLabel">Edit an answer?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="editAnswerForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="answer_id" id="editd_answer_id">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="answer">Your answer</label>
+                            <textarea class="form-control" rows="3" name="answer" id="answer" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-warning">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="removeQuestion" tabindex="-1" aria-labelledby="removeQuestionLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -133,6 +160,38 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-danger">Remove</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editQuestion" tabindex="-1" aria-labelledby="editQuestionLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="editQuestionLabel">Edit an question?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="editQuestionForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="question_id" id="editd_question_id">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="title">Question title</label>
+                            <input type="title" class="form-control" id="title" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="question">Your question</label>
+                            <textarea class="form-control" id="question" rows="3" name="question"
+                                id="question"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-warning">Edit</button>
                     </div>
                 </form>
             </div>
@@ -235,7 +294,8 @@
                         <p class="card-text"><pre>${resLog.body}</pre></p>
                         <p class="card-text"><small class="text-muted">At ${resLog.created_at}</small></p>
                         <div class="container">
-                            <button type="button" class="btn btn-outline-warning btn-sm">
+                            <button type="button" class="btn btn-outline-warning btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editQuestion" onclick="edit_question(${resLog.id},`+'`'+`${resLog.title}`+'`'+`,`+'`'+`${resLog.body}`+'`'+`)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -266,7 +326,8 @@
                         <p class="card-text"><pre>${resLog.body}</pre></p>
                         <p class="card-text"><small class="text-muted">At ${resLog.created_at}</small></p>
                         <div class="container">
-                            <button type="button" class="btn btn-outline-warning  btn-sm">
+                            <button type="button" class="btn btn-outline-warning  btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#editAnswer" onclick="edit_answer(${resLog.id},`+'`'+`${resLog.body}`+'`'+`)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
@@ -284,18 +345,14 @@
                     </div>
                 </div>
                 `;
-
                                 // Append partner HTML to the container
                                 $('#logContainer').append(resLogHTML);
                             });
                         }
-
                         paginations = `
                     <li class="page-item ${1 == data.currentPage ? 'disabled' : ''}">
                         <a class="page-link" href="${1 != data.currentPage ? 'log.html?page=' + (data.currentPage - 1) : ''}" tabindex="-1">Previous</a>
                     </li>`;
-
-
                         totalPages = data.totalPages;
                         for (var i = 1; i <= totalPages; i++) {
                             paginations += `
@@ -322,8 +379,6 @@
                     console.error(xhr.responseText);
                 }
             });
-
-
             $('form#removeAnswerForm').submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize(); // Serialize form data into URL-encoded string
@@ -345,11 +400,9 @@
                 });
             }
             );
-
             $('form#removeQuestionForm').submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize(); // Serialize form data into URL-encoded string
-
                 $.ajax({
                     url: '../php/deleteQuestion.php',
                     type: 'POST',
@@ -368,16 +421,65 @@
             }
             );
 
+            $('form#editQuestionForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize(); // Serialize form data into URL-encoded string
+                $.ajax({
+                    url: '../php/editQuestion.php',
+                    type: 'POST',
+                    data: formData, // Form data to be sent to the server
+                    dataType: 'json',
+                    success: function (data) {
+                        alert(data.message)
+                        if (data.status == 'success') {
+                            location.reload();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+            );
+
+            $('form#editAnswerForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize(); // Serialize form data into URL-encoded string
+                $.ajax({
+                    url: '../php/editAnswer.php',
+                    type: 'POST',
+                    data: formData, // Form data to be sent to the server
+                    dataType: 'json',
+                    success: function (data) {
+                        alert(data.message)
+                        if (data.status == 'success') {
+                            location.reload();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+            );
         });
+
+
         function delete_answer(removed_answer_id) {
             $("#removed_answer_id").val(removed_answer_id);
         }
-
+        function edit_answer(answer_id, answer) {
+            $("#editd_answer_id").val(answer_id);
+            $("#answer").val(answer);
+        }
         function delete_question(removed_question_id) {
             $("#removed_question_id").val(removed_question_id);
         }
-
-
+        function edit_question(answer_id, title, question) {
+            $("#editd_question_id").val(answer_id);
+            $("#question").val(question);
+            $("#title").val(title);
+        }
     </script>
 
 </body>
